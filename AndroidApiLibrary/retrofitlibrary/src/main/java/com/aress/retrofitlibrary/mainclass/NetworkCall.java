@@ -40,7 +40,7 @@ public class NetworkCall<T> implements Constants {
                     Log.d("value != null", value.toString());
                     if (callback != null) {
                         callback.onAPIFetched(value);
-                        result.postValue(Resource.success(value));
+                        //result.postValue(Resource.success(value));
                         Log.d("RespInNetworkCall", value.toString());
                     }
                 } else {
