@@ -53,7 +53,7 @@ public class RetrofitServiceBuilder {
     }
 
     //when storage permission needed for file upload and download
-    public void askForPermission(String permission, Integer requestCode, Context context, Activity activity) {
+    public static void askForPermission(String permission, Integer requestCode, Context context, Activity activity) {
         if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
