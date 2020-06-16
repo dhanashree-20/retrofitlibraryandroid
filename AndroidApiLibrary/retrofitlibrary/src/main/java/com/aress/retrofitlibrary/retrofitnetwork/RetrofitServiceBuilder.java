@@ -10,10 +10,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServiceBuilderRetrofit {
-    private static ServiceBuilderRetrofit INSTANCE;
+public class RetrofitServiceBuilder {
+    private static RetrofitServiceBuilder INSTANCE;
     private static Object InterfaceClass;
-    private ServiceBuilderRetrofit() {
+    private RetrofitServiceBuilder() {
     }
 
     //method for getting interface class and base url from demo app
@@ -39,7 +39,7 @@ public class ServiceBuilderRetrofit {
     //method for getting interface and base url
     public static <T> void with(@NotNull Class<T> serviceType,@NotNull String Base_Url) {
         if(INSTANCE == null) {
-            INSTANCE = new ServiceBuilderRetrofit();
+            INSTANCE = new RetrofitServiceBuilder();
         }
         INSTANCE.setRetrofitBuilder(serviceType,Base_Url);
     }
