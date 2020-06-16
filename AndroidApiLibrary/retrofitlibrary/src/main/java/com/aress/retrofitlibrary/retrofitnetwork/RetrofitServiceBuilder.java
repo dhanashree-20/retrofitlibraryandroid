@@ -1,5 +1,13 @@
 package com.aress.retrofitlibrary.retrofitnetwork;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.aress.retrofitlibrary.utils.MissingRetrofitInitialization;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +50,21 @@ public class RetrofitServiceBuilder {
             INSTANCE = new RetrofitServiceBuilder();
         }
         INSTANCE.setRetrofitBuilder(serviceType,Base_Url);
+    }
+
+    //when storage permission needed for file upload and download
+    public void askForPermission(String permission, Integer requestCode, Context context, Activity activity) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+
+            } else {
+                ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+            }
+        } else if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_DENIED) {
+            Toast.makeText(context, "Permission was denied", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
