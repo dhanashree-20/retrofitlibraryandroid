@@ -12,7 +12,10 @@ import com.aress.retrofitlibrary.utils.MissingRetrofitInitialization;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -20,18 +23,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitServiceBuilder {
     private static RetrofitServiceBuilder INSTANCE;
+    private static final long HTTP_TIMEOUT = 30000;
     private static Object InterfaceClass;
     private RetrofitServiceBuilder() {
     }
 
     //method for getting interface class and base url from demo app
     private <T> void setRetrofitBuilder(@NotNull Class<T> serviceType,@NotNull String Base_Url) {
-        OkHttpClient.Builder okHttp = new OkHttpClient.Builder();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttp = new OkHttpClient.Builder()
+                .readTimeout(HTTP_TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(HTTP_TIMEOUT, TimeUnit.MILLISECONDS)
+                .addInterceptor(interceptor).build();
+
         Retrofit.Builder builder = (new Retrofit.Builder())
                 .baseUrl(Base_Url)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory((Converter.Factory) GsonConverterFactory.create())
-                .client(okHttp.build());
+                .client(okHttp);
         Retrofit retrofit = builder.build();
         InterfaceClass = retrofit.create(serviceType);
     }
